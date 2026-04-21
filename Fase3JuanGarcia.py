@@ -77,7 +77,7 @@ class Lista(EstructuraDatos):
 def abrir_control_afiliados():
     registro = tk.Tk()
     registro.title("Caja Compensandote - Control de Afiliados")
-    registro.geometry("1300x650") # Aumentamos el ancho para la nueva columna
+    registro.geometry("1300x650")
     registro.resizable(False, False)
 
     # --- Instancias de las estructuras de datos ---
@@ -88,7 +88,7 @@ def abrir_control_afiliados():
     }
 
     def tarifa_ingreso_empleado(ingreso):
-        #Calcula la tarifa de afiliación basada en el ingreso mensual.
+        #Calcula la tarifa de afiliacion basada en el ingreso mensual.
         tarifa = 0
         if 1000000 <= ingreso <= 2000000:
             tarifa = 45000
@@ -142,7 +142,7 @@ def abrir_control_afiliados():
     vcmd_alpha = (registro.register(validar_solo_letras), '%P')
 
     # --- Variable de control para el formateo de ingresos ---
-    # Bandera para evitar recursión infinita en el trace_add
+    # Bandera para evitar recursion infinita en el trace_add
     ingresos_actuales_var = tk.StringVar()
     _formatting_active = False
 
@@ -186,7 +186,7 @@ def abrir_control_afiliados():
     servicio_deseado_var = tk.StringVar(value=servicios[0]) # Valor por defecto
     resultado_var = tk.StringVar() # Para la tarifa total
 
-    # --- Función para actualizar la vista del TreeView ---
+    # --- Funcion para actualizar la vista del TreeView ---
     def actualizar_vista_treeview(event=None):
         # Obtener la estructura seleccionada para la vista
         vista_seleccionada = combo_vista_estructura.get()
@@ -214,7 +214,7 @@ def abrir_control_afiliados():
                     )
                 )
 
-    # --- Función Principal de Cálculo ---
+    # --- Funcion Principal de Calculo ---
     def calcular_tarifa_final():
         try:
             # Limpiar el string de ingresos antes de convertir a float
@@ -222,15 +222,15 @@ def abrir_control_afiliados():
             modalidad = modalidad_empleo_var.get()
             servicio = servicio_deseado_var.get()
 
-            # 2. Validar que los campos necesarios para el cálculo no estén vacíos
+            # 2. Validar que los campos necesarios para el calculo no esten vacios
             if not all([ingreso_str, modalidad, servicio]):
-                messagebox.showwarning("Campos Incompletos", "Por favor, complete los campos de Ingresos, Modalidad y Servicio para el cálculo.", parent=registro)
+                messagebox.showwarning("Campos Incompletos", "Por favor, complete los campos de Ingresos, Modalidad y Servicio para el calculo.", parent=registro)
                 return
 
             ingreso = float(ingreso_str)
             tarifa_base = 0
 
-            # 3. Calcular tarifa base según la modalidad
+            # 3. Calcular tarifa base segun la modalidad
             if modalidad == "Empleado":
                 tarifa_base = tarifa_ingreso_empleado(ingreso)
             elif modalidad == "Independiente":
@@ -246,14 +246,14 @@ def abrir_control_afiliados():
         except ValueError:
             messagebox.showerror("Error de Datos", "El campo 'Ingresos Actuales' debe ser un número válido.", parent=registro)
 
-    # --- Función para registrar afiliado ---
+    # --- Funcion para registrar afiliado ---
     def registrar_afiliado():
         try:
-            # 1. Intentar calcular la tarifa primero. La función de cálculo mostrará sus propios errores si es necesario.
+            # 1. Intentar calcular la tarifa primero. La funcion de calculo mostrara sus propios errores si es necesario.
             calcular_tarifa_final()
             tarifa_total_str = resultado_var.get()
 
-            # 2. Si después del cálculo, la tarifa sigue vacía, la función de cálculo ya mostró un error. Salimos.
+            # 2. Si despues del calculo, la tarifa sigue vacía, la funcion de calculo ya mostro un error - salimos.
             if not tarifa_total_str:
                 return
 
@@ -263,12 +263,12 @@ def abrir_control_afiliados():
             num_id = numero_identificacion_var.get()
             nombre = nombre_completo_var.get()
             ingreso_str_raw = ingresos_actuales_var.get() # Valor formateado del campo
-            ingreso_str_cleaned = ''.join(filter(str.isdigit, ingreso_str_raw)) # Limpio para cálculo
+            ingreso_str_cleaned = ''.join(filter(str.isdigit, ingreso_str_raw)) # Limpio para calculo
             fecha_afiliacion = widgets["fecha_afiliacion"].get_date().strftime("%d/%m/%Y")
             modalidad = modalidad_empleo_var.get()
             servicio = servicio_deseado_var.get()
 
-            # 4. Validar que todos los campos (incluyendo los que no son para el cálculo) estén diligenciados
+            # 4. Validar que todos los campos (incluyendo los que no son para el calculo) esten diligenciados
             if not all([tipo_estructura, tipo_id, num_id, nombre, ingreso_str_cleaned, fecha_afiliacion, modalidad, servicio]):
                 messagebox.showwarning("Campos Incompletos", "Por favor, complete todos los campos antes de registrar.", parent=registro)
                 return
@@ -297,7 +297,7 @@ def abrir_control_afiliados():
                 estructura.agregar(afiliado_data)
                 messagebox.showinfo("Registro Exitoso", f"Afiliado '{nombre}' registrado en la {tipo_estructura}.", parent=registro)
                 
-                # Actualizar el TreeView si se está mostrando la estructura modificada
+                # Actualizar el TreeView si se esta mostrando la estructura modificada
                 if tipo_estructura == combo_vista_estructura.get():
                     actualizar_vista_treeview()
                 
@@ -306,11 +306,11 @@ def abrir_control_afiliados():
                 messagebox.showerror("Error", "Tipo de estructura de datos no válido.", parent=registro)
 
         except ValueError:
-            messagebox.showerror("Error de Datos", "Asegúrese de que 'Ingresos Actuales' y 'Tarifa Total' sean números válidos.", parent=registro)
+            messagebox.showerror("Error de Datos", "Asegurese de que 'Ingresos Actuales' y 'Tarifa Total' sean numeros validos.", parent=registro)
         except Exception as e:
-            messagebox.showerror("Error Inesperado", f"Ocurrió un error al registrar: {e}", parent=registro)
+            messagebox.showerror("Error Inesperado", f"Ocurrio un error al registrar: {e}", parent=registro)
 
-    # --- Función para limpiar el formulario ---
+    # --- Funcion para limpiar el formulario ---
     def limpiar_formulario():
         tipo_identificacion_var.set(documentos_identidad[0]) # Reset a valor por defecto
         numero_identificacion_var.set("")
@@ -321,7 +321,7 @@ def abrir_control_afiliados():
         servicio_deseado_var.set(servicios[0]) # Reset a valor por defecto
         resultado_var.set("") # Limpia el campo de tarifa
 
-    # --- Función para generar el reporte de la estructura seleccionada ---
+    # --- Funcion para generar el reporte de la estructura seleccionada ---
     def generar_reporte():
         try:
             # 1. Obtener la estructura seleccionada para la vista
@@ -339,14 +339,14 @@ def abrir_control_afiliados():
             # 3. Crear el mensaje del reporte
             mensaje_reporte = (
                 f"--- Reporte de la {vista_seleccionada} ---\n\n"
-                f"Número de registros: {numero_registros}\n"
-                f"Suma total de tarifas de afiliación: ${total_tarifas:,.0f}"
+                f"Numero de registros: {numero_registros}\n"
+                f"Suma total de tarifas de afiliacion: ${total_tarifas:,.0f}"
             )
             messagebox.showinfo(f"Reporte - {vista_seleccionada}", mensaje_reporte, parent=registro)
         except Exception as e:
             messagebox.showerror("Error en Reporte", f"Ocurrió un error al generar el reporte: {e}", parent=registro)
 
-    # --- Función para eliminar afiliado de la estructura seleccionada ---
+    # --- Funcion para eliminar afiliado de la estructura seleccionada ---
     def eliminar_afiliado_seleccionado():
         vista_seleccionada = combo_vista_estructura.get()
         estructura = estructuras_disponibles.get(vista_seleccionada)
@@ -355,13 +355,13 @@ def abrir_control_afiliados():
             messagebox.showinfo("Eliminar", f"No hay registros en la {vista_seleccionada} para eliminar.", parent=registro)
             return
 
-        if not messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro que desea eliminar un registro de la {vista_seleccionada}?", parent=registro):
+        if not messagebox.askyesno("Confirmar Eliminacion", f"Esta seguro que desea eliminar un registro de la {vista_seleccionada}?", parent=registro):
             return
 
         if vista_seleccionada == "Lista":
             id_a_eliminar = simpledialog.askstring("Eliminar de Lista", "Ingrese el número de identificación del afiliado a eliminar:", parent=registro)
             if not id_a_eliminar:
-                messagebox.showwarning("Eliminar", "Debe ingresar un número de identificación para eliminar de la Lista.", parent=registro)
+                messagebox.showwarning("Eliminar", "Debe ingresar un numero de identificación para eliminar de la Lista.", parent=registro)
                 return
             
             if estructura.eliminar(id_a_eliminar):
@@ -383,10 +383,9 @@ def abrir_control_afiliados():
         
         actualizar_vista_treeview() # Refrescar la vista después de la eliminación
 
-    # --- Configuración de la Interfaz Gráfica (UI) ---
-    # --- Main Layout Frames ---
-    registro.grid_columnconfigure(0, weight=2) # Sidebar ~40%
-    registro.grid_columnconfigure(1, weight=3) # Main content ~60%
+    # --- Configuracion de la Interfaz Gráfica (UI) ---
+    registro.grid_columnconfigure(0, weight=2) # 40%
+    registro.grid_columnconfigure(1, weight=3) # 60%
     registro.grid_rowconfigure(0, weight=1)
 
     # --- Sidebar (Formulario) ---
@@ -423,7 +422,7 @@ def abrir_control_afiliados():
     widgets["servicio_deseado"] = ttk.Combobox(frame_sidebar, textvariable=servicio_deseado_var, values=servicios, font=("Helvetica", 12), state="readonly")
     widgets["servicio_deseado"].grid(row=7, column=1, padx=5, pady=8, sticky="ew")
 
-    # --- Botón de Acción ---
+    # --- Boton de Acción ---
     tk.Button(frame_sidebar, text="Calcular Tarifa de Afiliación", command=calcular_tarifa_final, font=("Helvetica", 12, "bold")).grid(row=8, column=0, columnspan=2, pady=10)
 
     # --- Campo de Tarifa Total (no editable) ---
@@ -438,7 +437,7 @@ def abrir_control_afiliados():
     tk.Button(frame_botones_accion, text="Limpiar Formulario", command=limpiar_formulario, font=("Helvetica", 12)).pack(side="left", padx=5) # Columna 1
     tk.Button(frame_botones_accion, text="Salir", command=registro.destroy, font=("Helvetica", 12)).pack(side="left", padx=5) # Columna 2
 
-    # --- Main Content (Visualización de Datos) ---
+    # --- Main Content (Visualizacion de Datos) ---
     frame_main_content = tk.Frame(registro, padx=15, pady=15)
     frame_main_content.grid(row=0, column=1, sticky="nsew")
     frame_main_content.grid_rowconfigure(2, weight=1) # Fila del TreeView se expande
@@ -456,10 +455,10 @@ def abrir_control_afiliados():
     combo_vista_estructura.grid(row=0, column=0, sticky="ew")
     combo_vista_estructura.bind("<<ComboboxSelected>>", actualizar_vista_treeview)
 
-    # Botón de Eliminar
+    # Boton de Eliminar
     tk.Button(frame_vista_controles, text="Eliminar", command=eliminar_afiliado_seleccionado, font=("Helvetica", 12)).grid(row=0, column=2, padx=(10, 0))
 
-    # Botón de Reporte
+    # Boton de Reporte
     tk.Button(frame_vista_controles, text="Reporte", command=generar_reporte, font=("Helvetica", 12)).grid(row=0, column=1, padx=(10, 0))
 
     # TreeView para mostrar los datos
@@ -494,7 +493,7 @@ def abrir_control_afiliados():
     tree.heading("Fecha", text="Fecha Afiliación", anchor=tk.CENTER)
     tree.heading("Servicio", text="Servicio Deseado", anchor=tk.W)
 
-    # Enlazar la función de formato al campo de ingresos
+    # Enlazar la funcion de formato al campo de ingresos
     ingresos_actuales_var.trace_add("write", format_ingresos_input)
 
     # Establecer valores iniciales para los Comboboxes y Radiobuttons
@@ -503,14 +502,14 @@ def abrir_control_afiliados():
     widgets["estructura_datos"].set(list(estructuras_disponibles.keys())[0])
     combo_vista_estructura.set(list(estructuras_disponibles.keys())[0]) # Valor por defecto para el TreeView
 
-    # Llamar a la función una vez para poblar la vista inicial
+    # Llamar a la funcion una vez para poblar la vista inicial
     actualizar_vista_treeview()
 
 
 def verificar_contrasena(event=None):
     """
     Verifica si la contraseña ingresada en el campo de texto es correcta.
-    El parametro 'event' es para permitir la vinculación con eventos de teclado.
+    El parametro 'event' es para permitir la vinculacion con eventos de teclado.
     """
     intentos_restantes = int(label_intentos.cget("text").split()[-1])
     
@@ -533,7 +532,7 @@ def acerca_de(event=None):
     mensaje = (
         "Programa: Estructura de datos\n"
         "Estudiante: Juan Pablo Garcia\n"
-        "Número de grupo colaborativo: 301305A_2201"
+        "Numero de grupo colaborativo: 301305A_2201"
     )
     messagebox.showinfo(titulo, mensaje, parent=ventana)
 
@@ -544,7 +543,7 @@ ventana.title("Login - Compensandote")
 ventana.geometry("540x220") # Aumentamos la altura para asegurar que los botones sean visibles
 ventana.resizable(False, False)
 
-# --- Barra superior con el botón "Acerca de" ---
+# --- Barra superior con el boton "Acerca de" ---
 # En lugar de un menú (que en macOS se va a la barra superior de la pantalla),
 # creamos un Frame para simular una barra dentro de la ventana.
 frame_menu = tk.Frame(ventana, relief="raised", bd=1)
